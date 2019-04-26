@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- These meta tags come first. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My Campaign</title>
+
+    <!-- Include the CSS -->
+    <link href="{% static 'assets/css/toolkit-light.css' %}" rel="stylesheet">
+    {% block extracss   %}
+    {% endblock extracss %}
+  </head>
+  <body>
+    <div class="row m-0 p-2">
+      <div class="col-md-2 sidebar">
+          <nav class="sidebar-nav">
+            <div class="sidebar-header">
+              <button class="nav-toggler nav-toggler-md sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-md">
+                <span class="sr-only">Toggle nav</span>
+              </button>
+              <a class="sidebar-brand img-responsive" href="../index.html">
+                <span class="icon icon-leaf sidebar-brand-icon"></span>
+              </a>
+            </div>
+            <div class="collapse nav-toggleable-md" id="nav-toggleable-md">
+              <ul class="nav nav-pills nav-stacked flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="../order-history-light/index.html">Order history</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="../fluid-light/index.html">Fluid layout</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="../icon-nav-light/index.html">Icon nav</a>
+                </li>
+              </ul>
+              <hr class="visible-xs mt-3">
+            </div>
+          </nav>
+      </div>
+      <div class="col-md-10">
+            <div class="dashhead">
+              <div class="dashhead-titles">
+                <h6 class="dashhead-subtitle">Dashboards</h6>
+                <h2 class="dashhead-title">Overview</h2>
+              </div>
+              <div class="btn-toolbar dashhead-toolbar">
+                <div class="btn-toolbar-item input-with-icon">
+                    <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="icon icon-user"></span> {{request.user.get_fullname}}
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="#">Logout</a>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          {% block content %}
+          {% endblock content %}
+      </div>
+    </div>
+    
+    <!-- Include jQuery (required) and the JS -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/tether.min.js' %}"></script>
+    <script src="{% static 'assets/js/chart.js' %}"></script>
+    <script src="{% static 'assets/js/toolkit.js' %}"></script>
+  </body>
+</html>

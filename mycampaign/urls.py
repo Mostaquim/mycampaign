@@ -14,8 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+from accounts import urls as accounturl
+from django.conf import settings
+from django.conf.urls.static import static
+from dashboard import views as dashboard_views
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('dashboard/',dashboard_views.Dashboard.as_view(),name='dashboard' ),
+    path('messages/',  include('message.urls') ),
+    path('summernote/', include('django_summernote.urls')),
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
