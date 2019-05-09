@@ -1,0 +1,5 @@
+<form action="{{ request.path }}" method="POST">
+    {% csrf_token %}
+    {% include 'includes/generic_forms.html' with form=form %}
+    <button type="submit" class="btn btn-success btn-block">Save</button>
+</form>

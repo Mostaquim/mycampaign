@@ -1,0 +1,72 @@
+{% extends 'base_application.html' %}
+{% load static %}
+{% block extracss %}
+<link href="{% static 'assets/datatables/datatables.min.css' %}" rel="stylesheet">
+{% endblock extracss %}
+{% block title %}All Projects{% endblock title %}
+{% block content %}
+
+<div class="block p-3">
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th></th>
+                <th>Name</th>
+                <th>Client</th>
+                <th>Deadline</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Assigned to</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in projects %}
+            <tr>
+                <td>{{p.pk}}</td>
+                <td></td>
+                <td>{{ p.quantity_of_flyers }} {{ p.get_type_of_media_display }} to be distributed to
+                    {{p.get_type_of_service_display}} within chosen area</td>
+                <td>{{p.company.company_name}}</td>
+                <td>{{p.campaign_finish_date}}</td>
+                <td>{{p.get_type_of_service_display}}</td>
+                <td>{{p.get_status_display}}</td>
+                <td>{{ p.project_admin }}</td>
+                <td>
+                    <button type="button" class="edit form_modal_button" data-title="Send Message"
+                        data-url="\projects\edit\{{p.pk}}\" data-target="#form_modal">
+                        <span class="icon icon-cog"></span>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock content %}
+
+
+{% block extrajs %}
+<script src="{% static 'assets/datatables/datatables.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#example').DataTable(
+            {
+                "pageLength": 25,
+                "lengthChange": false,
+                aaSorting: [[0, 'desc']]
+            }
+        );
+
+        $('#example tbody').on('click', 'tr', function (event) {
+            var data = table.row(this).data();
+            if ($(event.target).is('td')) {
+                window.location.href = "/projects/" + data[0];
+            }
+        });
+    });
+</script>
+{% endblock extrajs %}

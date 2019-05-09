@@ -1,0 +1,88 @@
+{% extends 'base_application.html' %}
+{% block title %}Invoice ID # {{invoice.pk}}{% endblock title %}
+
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-sm-12 block">
+        <h3 class="mt-3 border-bottom">Invoice Details</h3>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="fields">
+                    <p class="field_name">Invoice ID</p>
+                    <p class="field_answer">{{ invoice.pk }}</p>
+                </div>
+                <div class="fields">
+                    <p class="field_name">Status</p>
+                    <p class="field_answer">{{ invoice.get_status_display }}</p>
+                </div>
+                <div class="fields">
+                    <p class="field_name">Issue Date</p>
+                    <p class="field_answer">{{ invoice.issue_date }}</p>
+                </div>
+                <div class="fields">
+                    <p class="field_name">Due Date</p>
+                    <p class="field_answer">{{ invoice.due_date }}</p>
+                </div>
+                <div class="fields">
+                    <p class="field_name">Campaign</p>
+                    <p class="field_answer">{{ invoice.project.pk }}</p>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="fields">
+                    <p class="field_name">Company</p>
+                    <p class="field_answer">{{ invoice.company.company_name }}</p>
+                </div>
+                <div class="fields">
+                    <p class="field_name">Contact</p>
+                    <p class="field_answer">{{ invoice.company.primary_user.user }}</p>
+                </div>
+                <div class="fields">
+                    <p class="field_name">Address</p>
+                    <p class="field_answer">{{ invoice.company.address }}</p>
+                </div>
+                <div class="fields">
+                    <p class="field_name">Email</p>
+                    <p class="field_answer">{{ invoice.company.primary_user.user.email }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 block">
+        <h3 class="mt-3 border-bottom">Invoice Details</h3>
+
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Sub Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in invoice.invoiceitems_set.all %}
+                <tr>
+                    <td></td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.amount }}</td>
+                    <td>{{ item.value }}</td>
+                    <td>{{ item.get_subtotal }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td colspan="5" align="right">Total</td>
+                    <td>{{ invoice.total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

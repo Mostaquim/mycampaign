@@ -1,0 +1,80 @@
+{% extends 'base_application.html' %}
+{% load static %}
+{% block title %}All Companies{% endblock title %}
+
+{% block extracss %}
+<link href="{% static 'assets/datatables/datatables.min.css' %}" rel="stylesheet">
+{% endblock extracss %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12 block p-3">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Company Name</th>
+                    <th>Primary Contact</th>
+                    <th>Email</th>
+                    <th>Website</th>
+                    <th>Last Login</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for c in companies %}
+                <tr>
+                    <td>{{c.pk}}</td>
+                    <td>{{c.company_name}}</td>
+                    <td>{{c.primary_user.user.first_name }} {{c.primary_user.user.last_name }}</td>
+                    <td>{{c.primary_user.user.email}}</td>
+                    <td>
+                        {% if c.website %}
+                        {{c.website}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if  c.primary_user.user.last_login %}
+                        {{ c.primary_user.user.last_login }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button type="button" class="edit form_modal_button" data-title="Send Message"
+                            data-url="\quotations\edit\{{q.pk}}\" data-target="#form_modal">
+                            <span class="icon icon-cog"></span>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+{% block extrajs %}
+<script src="{% static 'assets/datatables/datatables.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#example').DataTable(
+            {
+                "pageLength": 25,
+                "lengthChange": false,
+                aaSorting: [[0, 'desc']]
+            }
+        );
+
+        $('#example tbody').on('click', 'tr', function () {
+            var data = table.row(this).data();
+            if ($(event.target).is('td')) {
+                window.location.href = "/companies/" + data[0];
+            }
+        });
+    });
+</script>
+{% endblock extrajs %}

@@ -1,0 +1,119 @@
+{% extends 'base_application.html' %}
+{% load static %}
+{% block title %}Quotation ID # {{quotation.pk}}{% endblock title %}
+{% block content %}
+
+
+<div class="row">
+    <div class="col-sm-12 col-md-4 block">
+        <h3 class="mt-3 border-bottom">Quotation Details</h3>
+        <div class="fields">
+            <div class="field">
+                <p class="field_name">Status</p>
+                <p class="field_answer">
+                    <span class="label {{ quotation.get_status_class }}">{{quotation.get_status_display}}</span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="field_name">Assigned To</p>
+                <p class="field_answer">{{quotation.assigned_user}}</p>
+            </div>
+
+            <div class="field">
+                <p class="field_name">Issued Date</p>
+                <p class="field_answer">{{quotation.issued_date}}</p>
+            </div>
+
+            <div class="field">
+                <p class="field_name">Campaign Required Start Date</p>
+                <p class="field_answer">{{quotation.campaign_start_date}}</p>
+            </div>
+
+            <div class="field">
+                <p class="field_name">Campaign Required Finish Date</p>
+                <p class="field_answer">{{quotation.campaign_finish_date}}</p>
+            </div>
+
+            <div class="field">
+                <p class="field_name">Target Postcodes</p>
+                {% for postcode in quotation.target_postcodes.all  %}
+                <p> {{postcode.area}}{{postcode.district}} sector {{ postcode.sector }} - {{ postcode.locality }}
+                    ({{postcode.total}})</p>
+                {% endfor %}
+            </div>
+
+            <div class="field">
+                <p class="field_name">Agreed Cost For This Campaign</p>
+                <p class="field_answer">{{ quotation.agreed_cost }}</p>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-4 block">
+        <h3 class="mt-3 border-bottom">PERSONAL INFO</h1>
+            <div class="field">
+                <p class="field_name">Business Name</p>
+                <p class="field_answer">{{ quotation.business_name|safe }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Full Name</p>
+                <p class="field_answer">{{ quotation.full_name }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Email</p>
+                <p class="field_answer">{{ quotation.email }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Phone</p>
+                <p class="field_answer">{{ quotation.phone }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Street</p>
+                <p class="field_answer">{{ quotation.street }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">City</p>
+                <p class="field_answer">{{ quotation.city }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Postcode</p>
+                <p class="field_answer">{{ quotation.postcode }}</p>
+            </div>
+    </div>
+    <div class="col-sm-12 col-md-4 block">
+        <h3 class="mt-3 border-bottom">Answers</h1>
+            <div class="field">
+                <p class="field_name">Type of Service Required</p>
+                <p class="field_answer">{{ quotation.get_type_of_service_display }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Type of Media</p>
+                <p class="field_answer">{{ quotation.get_type_of_media_display }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Do you require collection?</p>
+                <p class="field_answer">{{ quotation.get_require_collection_display }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Please provide details about your campaign</p>
+                <p class="field_answer">{{ quotation.campaign_details }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Number of Boxes to be collected/delivered (if known)</p>
+                <p class="field_answer">{{ quotation.get_number_of_boxes_display }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Any Special Instructions</p>
+                <p class="field_answer">{{ quotation.special_instruction }}</p>
+            </div>
+            <div class="field">
+                <p class="field_name">Title of media to be distributed</p>
+                <p class="field_answer">{{ quotation.title_of_media }}</p>
+            </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}

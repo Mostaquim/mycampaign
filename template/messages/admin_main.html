@@ -1,10 +1,11 @@
 {% extends 'base_application.html' %}
 
 {% block content %}
+<button type="button" class="btn btn-primary form_modal_button" data-title="Send Message" data-url="\messages\_send"  data-target="#form_modal">
+    Launch demo modal
+</button>
     <textarea class="summernote" name="editordata"></textarea>
     <div id="message_control">
-        <a href="/create" id="add">Create</a>
-        <a href="/create" id="add">Create</a>
         <a href="/create" id="add">Create</a>
     </div>
     <div id="message_box">

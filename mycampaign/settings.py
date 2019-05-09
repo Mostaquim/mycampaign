@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from .secret import KEY, DB_CONF
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fql+6@gkt@8vsl!4(e=y5q*oo8j8!_&p%rngu%k_1q$y9p2ab&'
+SECRET_KEY = KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,11 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
 
+    'core',
+    'widget_tweaks',
     'accounts',
     'dashboard',
     'message',
+    'quotation',
+    'projects',
+
+    'old',
+
+
     'django_summernote',
 ]
 
@@ -53,6 +61,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'core.middleware.old_hasher.OldHasher'
 ]
 
 ROOT_URLCONF = 'mycampaign.urls'
@@ -79,12 +95,7 @@ WSGI_APPLICATION = 'mycampaign.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = DB_CONF
 
 
 # Password validation
@@ -127,8 +138,9 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
 
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "staticdir"),
+    os.path.join(BASE_DIR, "static"),
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -138,10 +150,11 @@ MEDIA_URL = '/media/'
 SUMMERNOTE_CONFIG = {
     # Using SummernoteWidget - iframe mode, default
 
-    # Or, you can set it as False to use SummernoteInplaceWidget by default - no iframe mode
+    # Or, you can set it as False to use SummernoteInplaceWidget by
+    # default - no iframe mode
     # In this case, you have to load Bootstrap/jQuery stuff by manually.
     # Use this when you're already using Bootstraip/jQuery based themes.
-    'iframe': False,
+    'iframe': True,
 
     # You can put custom Summernote settings
     'summernote': {
@@ -150,14 +163,14 @@ SUMMERNOTE_CONFIG = {
 
         # Change editor size
         'width': '100%',
-        'height': '480',
+        'height': '300',
 
         # Use proper language setting automatically (default)
 
         # Or, set editor language/locale forcely
 
         # You can also add custom settings for external plugins
-       
+
     },
 
     # Need authentication while uploading attachments.
@@ -165,7 +178,7 @@ SUMMERNOTE_CONFIG = {
 
     # You can disable attachment feature.
     'disable_attachment': False,
-    
+
     # Set `True` to return attachment paths in absolute URIs.
     'attachment_absolute_uri': False,
 
@@ -176,14 +189,16 @@ SUMMERNOTE_CONFIG = {
     ),
 
     # You can also add custom css/js for SummernoteInplaceWidget.
-    # !!! Be sure to put {{ form.media }} in template before initiate summernote.
+    # !!! Be sure to put {{ form.media }} in template before
+    # initiate summernote.
     'css_for_inplace': (
     ),
     'js_for_inplace': (
     ),
 
     # Codemirror as codeview
-    # If any codemirror settings are defined, it will include codemirror files automatically.
+    # If any codemirror settings are defined, it will include codemirror files
+    # automatically.
     'css': (
         '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.29.0/theme/monokai.min.css',
     ),
@@ -202,8 +217,8 @@ SUMMERNOTE_CONFIG = {
 
     # To use external plugins,
     # Include them within `css` and `js`.
-    'js': (
-        '/static/assets/summernote/custom-config.js',
-    )
-    
+    # 'js': (
+    #     '/static/assets/js/summernote.js',
+    # )
+
 }

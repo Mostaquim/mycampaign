@@ -1,0 +1,8 @@
+li.summernote-dropdown:hover {
+    background: #f2f2f2;
+}
+li.summernote-dropdown {
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 5px 10px;
+}

@@ -1,1 +1,21 @@
-{{form}}
+{% load widget_tweaks %}
+<form action="{{ request.path }}" method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="{{ form.subject.id_for_label }}">{{ form.subject.label}}</label>
+        {% render_field form.subject class="form-control" placeholder=form..label required="true" %}
+        {% for error in form.subject.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.message.id_for_label }}">{{ form.message.label}}</label>
+        {% for error in form.message.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+        {% render_field form.message  %}
+
+    </div>
+    <button type="submit" class="btn btn-success btn-block">Send</button>
+</form>

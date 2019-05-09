@@ -1,0 +1,102 @@
+{% extends 'base_application.html' %}
+{% load static %}
+{% block title %}Company: {{ company.company_name }}{% endblock title %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12 col-md-3 block">
+        <h3 class="mt-3 border-bottom">Company Details</h3>
+        <div class="fields">
+            <p class="field_name">Company Name</p>
+            <p class="field_answer">{{ company.company_name }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Primary Contact</p>
+            <p class="field_answer">{{ company.primary_user.user }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Website</p>
+            <p class="field_answer">{{ company.website }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Address</p>
+            <p class="field_answer">{{ company.address }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Zip Code</p>
+            <p class="field_answer">{{ company.postcode }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">City</p>
+            <p class="field_answer">{{ company.city }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Country</p>
+            <p class="field_answer">{{ company.country}}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Vat No</p>
+            <p class="field_answer">{{ company.vat }}</p>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-8">
+        <div class="row">
+            <div class="col-sm-12 block">
+                <h3 class="mt-3 border-bottom">Contacts</h3>
+                <table id="company_clients" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Mobile</th>
+                            <th>Last Login</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for user in company.clients.all  %}
+                        <td>{{user.user}}</td>
+                        <td>{{user.user.email}}</td>
+                        <td>{% if user.phone %}
+                            {{user.phone}}
+                            {% endif %}</td>
+                        <td>
+                            {% if user.mobile %}
+                            {{user.mobile}}
+                            {% endif %}
+                        </td>
+                        <td>{% if user.last_login %}
+                            {{user.last_login}}
+                            {% endif %}</td>
+                        <td></td>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-12 block">
+                <h3 class="mt-3 border-bottom">Campaigns</h3>
+                <table id="company_clients" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in company.projects.all  %}
+                        <td>{{p.pk}}</td>
+                        <td>{{ p.quantity_of_flyers }} {{ p.get_type_of_media_display }} to be distributed to
+                            {{p.get_type_of_service_display}} within chosen area</td>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

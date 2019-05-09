@@ -1,0 +1,25 @@
+{% with id=widget.attrs.id %}
+<ul{% if id %} id="{{ id }}" {% endif %}{% if widget.attrs.class %} class="{{ widget.attrs.class }}" {% endif %}>
+
+{% for group, options, index in widget.optgroups %}
+       
+        {% for option in options %}
+    
+    {% with widget=option %}
+            <input type="radio" 
+                name="{{ widget.name }}" 
+                value="{{ widget.value|stringformat:'s' }}" 
+                class="checkbox" 
+                data-labelauty="{{ widget.label }}"
+             {% for name, value in widget.attrs.items %}
+                {% if value is not False %} 
+                {{ name }}
+                {% if value is not True %}="{{ value|stringformat:'s' }}"
+                {% endif %}{% endif %}
+             {% endfor %} 
+        />
+    {% endwith %}
+    
+    {% endfor %}
+    {% endfor %}
+    </ul>{% endwith %}

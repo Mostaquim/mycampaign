@@ -1,0 +1,16 @@
+<li class="nav-item">
+        <a class="nav-link {% if active == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">Dashboard</a>
+</li>
+<li class="nav-item">
+        <a class="nav-link {% if active == 'Companies' %}active{% endif %}" href="{% url 'companies' %}">Companies</a>
+</li>
+<li class="nav-item">
+        <a class="nav-link {% if active == 'Quotations' %}active{% endif %}" href="{% url 'quotations' %}">Order
+                Forms</a>
+</li>
+<li class="nav-item">
+        <a class="nav-link {% if active == 'Projects' %}active{% endif %}" href="{% url 'projects' %}">Projects</a>
+</li>
+<li class="nav-item">
+        <a class="nav-link {% if active == 'Invoices' %}active{% endif %}" href="{% url 'invoices' %}">Invoices</a>
+</li>

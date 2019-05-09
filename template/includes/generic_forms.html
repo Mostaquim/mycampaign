@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+
+{% for field in form  %}
+<div class="form-group">
+    <label for="{{ field.id_for_label }}">{{ field.label}}</label>
+    {% render_field field class="form-control chosen-select" placeholder=field.label required="true" %}
+    {% for error in field.errors %}
+    <span class="help-block">{{ error }}</span>
+    {% endfor %}
+</div>
+{% endfor %}

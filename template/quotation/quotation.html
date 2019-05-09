@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load widget_tweaks static %}
+
+
+
+{% block extracss %}
+<link href="{% static 'assets/labelauty/jquery-labelauty.css' %}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'assets/dropzone/dropzone.min.css' %}">
+<style>
+    .form-control {
+        margin-top: 10px;
+    }
+</style>
+{% endblock extracss %}
+{% block content %}
+<form action="" method="post">
+    {{ form.errors }}
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.type_of_service %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.number_of_boxes %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.type_of_media %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.require_collection %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.quantity_of_flyers %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.title_of_media %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.campaign_details %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.business_name %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.full_name %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.email %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.phone %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.street %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.city %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.postcode %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.agreed_cost %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="form-control">
+                    <div class="form-control">
+                        <label for="">Target Postcodes</label>
+                        <select name="target_postcodes" id="target_postcode_select"
+                            class="js-data-example-ajax form-control" multiple required></select>
+                        {% for error in form.target_postcodes.errors %}
+                        <div class="invalid-feedback">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    <label for="">{{ form.campaign_start_date.label}}</label>
+                    {% render_field form.campaign_start_date class="form-control"  placeholder=form.campaign_start_date.label required="true" type="date" %}
+                    {% for error in form.campaign_start_date.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    <label for="">{{ form.campaign_finish_date.label}}</label>
+                    {% render_field form.campaign_finish_date class="form-control"  placeholder=form.campaign_finish_date.label required="true" type="date" %}
+                    {% for error in form.campaign_finish_date.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.password %}
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.confirm_password %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="form-control">
+                    {% include 'includes/default_fields.html' with field=form.special_instruction  %}
+                </div>
+            </div>
+        </div>
+        <div id="printing-service">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-control">
+                        <input type="checkbox" id=page-setting class="checkbox labelauty" name="page-setting"
+                            data-labelauty="Would you like your leaflets to be printed|I would like my leaflets to be printed">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-control">
+                                    {% include 'includes/default_fields.html' with field=form.pages  %}
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-control">
+                                    {% include 'includes/default_fields.html' with field=form.page_orientation  %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-control">
+                                    {% include 'includes/default_fields.html' with field=form.page_format %}
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-control">
+                                    {% include 'includes/gsm_select.html' with field=form.gsm  %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-control">
+                                    {% include 'includes/default_fields.html' with field=form.colours %}
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-control">
+                                    {% include 'includes/default_fields.html' with field=form.processing %}
+                                </div>
+                            </div>
+                            <select name="attachments" id="attachment-select" style="display: none;" multiple></select>
+                            <div class="col-sm-12 col-md-12">
+                                <div class="form-control">
+                                    <div id="dropzone-upload" class="dropzone"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-block btn-success">Submit</button>
+        </div>
+    </div>
+</form>
+{% endblock content %}
+{% block extra_js%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6/js/select2.min.js"></script>
+<script src="{% static 'assets/labelauty/jquery-labelauty.js' %}"></script>
+<script src="{% static 'assets/dropzone/dropzone.min.js' %}"></script>
+<script src="{% static 'assets/js/quotation.js' %}"></script>
+
+{% endblock extra_js %}

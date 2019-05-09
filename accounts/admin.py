@@ -2,14 +2,21 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField, AdminPasswordChangeForm
+from django.contrib.auth.forms import (
+    ReadOnlyPasswordHashField,
+    AdminPasswordChangeForm
+)
 from django.conf.urls import url
 
 from .models import User, Clients, Company
 
+
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label='Password confirmation',
+        widget=forms.PasswordInput
+    )
 
     class Meta:
         model = User
@@ -24,24 +31,26 @@ class UserCreationForm(forms.ModelForm):
         return password2
 
     def save(self, commit=True):
-        user = super.save(commit=False)
+        user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
 
         if commit:
             user.save()
         return user
 
+
 class UserChangeForm(forms.ModelForm):
 
-    password = ReadOnlyPasswordHashField(help_text="Change password here <a href='../password'>Change</a>")
+    password = ReadOnlyPasswordHashField(
+        help_text="Change password here <a href='../password'>Change</a>")
+
+    def clean_password(self):
+        return self.initial["password"]
 
     class Meta:
         model = User
-        fields = ('email','password', 'first_name', 'last_name')
+        fields = ('email', 'password', 'first_name', 'last_name')
 
-        def clean_password(self):
-
-            return self.initial["password"]
 
 class MyAdminPasswordChangeForm(AdminPasswordChangeForm):
 
@@ -55,16 +64,17 @@ class MyAdminPasswordChangeForm(AdminPasswordChangeForm):
             self.user.save()
         return self.user
 
+
 class UserAdmin(BaseUserAdmin):
 
     form = UserChangeForm
     add_form = UserCreationForm
     change_password_form = MyAdminPasswordChangeForm
 
-    list_display = ('email','first_name', 'last_name', 'admin', 'client')
+    list_display = ('email', 'first_name', 'last_name', 'admin', 'client')
 
-    list_filter = ( 'admin','staff', 'client' )
-    
+    list_filter = ('admin', 'staff', 'client')
+
     fieldsets = (
         (None, {
             'fields': (
@@ -72,15 +82,22 @@ class UserAdmin(BaseUserAdmin):
             ),
         }),
         ('Personal Info', {
-                'fields': (
-                    'first_name','last_name',
-                )
+            'fields': (
+                'first_name', 'last_name',
+            )
         }),
         ('Permissions', {
-                'fields': (
-                    'admin','staff', 'client',
-                )
+            'fields': (
+                'admin', 'staff', 'client', 'accountant'
+            )
         })
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'first_name', 'last_name', 'password1', 'password2'),
+        }),
     )
 
     search_fields = ('email',)
@@ -89,15 +106,15 @@ class UserAdmin(BaseUserAdmin):
 
     def get_urls(self):
         return [
-               url(
-                   r'^(.+)/password/$',
-                   self.admin_site.admin_view(self.user_change_password),
-                   name='auth_user_password_change',
-               ),
-           ] + super(UserAdmin, self).get_urls()
+            url(
+                r'^(.+)/password/$',
+                self.admin_site.admin_view(self.user_change_password),
+                name='auth_user_password_change',
+            ),
+        ] + super(UserAdmin, self).get_urls()
 
 
-admin.site.register(User,UserAdmin)
+admin.site.register(User, UserAdmin)
 admin.site.unregister(Group)
 admin.site.register(Clients)
 admin.site.register(Company)

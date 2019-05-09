@@ -1,0 +1,10 @@
+{% load widget_tweaks %}
+
+<label for="">{{ field.label}}</label>
+
+{% render_field field class="form-control" placeholder=field.label required="true" %}
+{% for error in field.errors %}
+<div class="invalid-feedback">
+    {{ error }}
+</div>
+{% endfor %}

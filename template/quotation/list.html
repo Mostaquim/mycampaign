@@ -1,0 +1,76 @@
+{% extends 'base_application.html' %}
+{% load static %}
+{% block title %}All Orders{% endblock title %}
+
+{% block extracss %}
+<link href="{% static 'assets/datatables/datatables.min.css' %}" rel="stylesheet">
+{% endblock extracss %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12 block p-3">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Issue Date</th>
+                    <th>Company / Name</th>
+                    <th>Assigned to</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for q in quotations %}
+                <tr>
+                    <td>{{q.pk}}</td>
+                    <td><span class="{{ q.get_status_class }} label">{{q.get_status_display}}</span></td>
+                    <td>{{q.issued_date}}</td>
+                    <td>{{q.business_name|safe}}</td>
+                    <td>
+                        {% if q.assigned_user %}
+                        <span class="label green">{{q.assigned_user}}</span>
+                        {% else %}
+                        <span class="label grey">Not Assigned</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button type="button" class="edit form_modal_button" data-title="Send Message"
+                            data-url="\quotations\edit\{{q.pk}}\" data-target="#form_modal">
+                            <span class="icon icon-cog"></span>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+{% block extrajs %}
+<script src="{% static 'assets/datatables/datatables.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#example').DataTable(
+            {
+                "pageLength": 25,
+                "lengthChange": false,
+                aaSorting: [[0, 'desc']]
+            }
+        );
+
+        $('#example tbody').on('click', 'tr', function () {
+            var data = table.row(this).data();
+            if ($(event.target).is('td')) {
+                window.location.href = "/quotations/" + data[0];
+            }
+        });
+    });
+</script>
+{% endblock extrajs %}

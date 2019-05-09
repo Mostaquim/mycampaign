@@ -1,0 +1,70 @@
+table.dataTable td, table.dataTable th {
+    height: 50px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.label {
+    border: 1px solid;
+    padding: 0 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.green {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.yellow {
+    color: #cab601;
+}
+
+.red {
+    color: red;
+}
+
+.border-bottom {
+    border-bottom: 2px solid #1a97c6;
+}
+
+.field {
+    border-bottom: 1px solid #eee;
+}
+
+p.field_name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+tbody {
+    font-size: 14px;
+}
+
+.block {
+    background: #fff;
+    color: #000;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 3px 3px 0px #1a97c6;
+}
+
+body {
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #cfd2da;
+    background-color: #252830;
+}
+
+.block h1, .block h2, .block h3, .block h4, .block h5, .block h6, .block .h1, .block .h2, .block .h3, .block .h4, .block .h5, .block .h6 {
+    color: #000;
+}
+
+.dashhead-subtitle {
+    color: #ced1da;
+}

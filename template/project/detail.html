@@ -1,0 +1,112 @@
+{% extends 'base_application.html' %}
+{% block title %}Project ID # {{project.pk}}{% endblock title %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12 col-md-4 block">
+        <h3 class="mt-3 border-bottom">Campaign Details</h3>
+        <div class="fields">
+            <p class="field_name">Campaign ID</p>
+            <p class="field_answer">{{ project.pk }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Category</p>
+            <p class="field_answer">{{ project.get_type_of_service_display }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Company</p>
+            <p class="field_answer">{{ project.company }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Start Date</p>
+            <p class="field_answer">{{ project.campaign_start_date }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Deadline</p>
+            <p class="field_answer">{{ project.campaign_finish_date }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Created on</p>
+            <p class="field_answer">{{ project.created }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Status</p>
+            <p class="field_answer">{{ project.get_status_display }}</p>
+        </div>
+        <div class="fields">
+            <p class="field_name">Priority</p>
+            <p class="field_answer">{{ project.get_priority_display }}</p>
+        </div>
+
+        {% if project.target_postcodes.all %}
+        <div class="fields">
+            <p class="field_name">Target Postcodes</p>
+            {% for postcode in project.target_postcodes.all  %}
+            <p> {{postcode.area}}{{postcode.district}} sector {{ postcode.sector }} - {{ postcode.locality }}
+                ({{postcode.total}})</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% if project.target_area %}
+    <div class="col-sm-12 col-md-4 block">
+        <h3 class="mt-3 border-bottom">Target Area</h3>
+        <p class="field_name">Target households</p>
+        <p class="field_answer">{{ project.target_area.households }}</p>
+        <div style="height:400px" id="map"></div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
+
+
+{% block extrajs %}
+
+{% if project.target_area %}
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACtELi1l0M60sMU0SnR7kWeCKiKnSk6SM&amp;libraries=drawing,places">
+    </script>
+<script>
+    var map;
+    var count = 0
+    var data = "{{ project.target_area.geo_json|safe }}"
+    var parser = new DOMParser;
+    var dom = parser.parseFromString(
+        '<!doctype html><body>' + data,
+        'text/html');
+    var decodedString = dom.body.textContent;
+    var data = JSON.parse(decodedString)
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8
+        });
+        var bounds = new google.maps.LatLngBounds();
+        data.features.forEach(function (e) {
+            count += parseInt(e.properties.count)
+        })
+        // document.getElementById('hh-count').innerHTML = 'Target Area *  Total Household  ' + count
+        map.data.addListener('addfeature', function (e) {
+
+            processPoints(e.feature.getGeometry(), bounds.extend, bounds);
+            map.fitBounds(bounds);
+        });
+        map.data.addGeoJson(data)
+    }
+    function processPoints(geometry, callback, thisArg) {
+        if (geometry instanceof google.maps.LatLng) {
+            callback.call(thisArg, geometry);
+        } else if (geometry instanceof google.maps.Data.Point) {
+            callback.call(thisArg, geometry.get());
+        } else {
+            geometry.getArray().forEach(function (g) {
+                processPoints(g, callback, thisArg);
+            });
+        }
+    }
+    google.maps.event.addDomListener(window, 'load', initMap);
+</script>
+{% endif %}
+{% endblock extrajs %}
